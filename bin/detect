@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "Cloud SQL Proxy"
+exit 0

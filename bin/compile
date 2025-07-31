@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+CLOUD_SQL_PROXY_VERSION="v2.18.0"
+CLOUD_SQL_PROXY_URL="https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/${CLOUD_SQL_PROXY_VERSION}/cloud-sql-proxy.linux.amd64"
+CACHED_BINARY="$CACHE_DIR/cloud-sql-proxy-${CLOUD_SQL_PROXY_VERSION}"
+
+echo "-----> Installing Cloud SQL Proxy ${CLOUD_SQL_PROXY_VERSION}"
+
+# Create directories
+mkdir -p "$BUILD_DIR/bin"
+mkdir -p "$CACHE_DIR"
+
+# Check if binary exists in cache
+if [[ -f "$CACHED_BINARY" ]]; then
+    echo "       Using cached binary"
+    cp "$CACHED_BINARY" "$BUILD_DIR/bin/cloud-sql-proxy"
+else
+    echo "       Downloading from ${CLOUD_SQL_PROXY_URL}"
+    curl -L -o "$BUILD_DIR/bin/cloud-sql-proxy" "$CLOUD_SQL_PROXY_URL"
+
+    # Cache the binary for future builds
+    echo "       Caching binary for future builds"
+    cp "$BUILD_DIR/bin/cloud-sql-proxy" "$CACHED_BINARY"
+fi
+
+# Make it executable
+chmod +x "$BUILD_DIR/bin/cloud-sql-proxy"
+
+echo "       Cloud SQL Proxy installed to bin/cloud-sql-proxy"
+
+exit 0
