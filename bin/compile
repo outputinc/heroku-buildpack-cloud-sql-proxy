@@ -6,7 +6,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-CLOUD_SQL_PROXY_VERSION="v2.18.0"
+CLOUD_SQL_PROXY_VERSION="${CLOUD_SQL_PROXY_VERSION:-v2.18.0}"
 CLOUD_SQL_PROXY_URL="https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/${CLOUD_SQL_PROXY_VERSION}/cloud-sql-proxy.linux.amd64"
 CACHED_BINARY="$CACHE_DIR/cloud-sql-proxy-${CLOUD_SQL_PROXY_VERSION}"
 
@@ -17,7 +17,7 @@ mkdir -p "$BUILD_DIR/bin"
 mkdir -p "$CACHE_DIR"
 
 # Check if binary exists in cache
-if [[ -f "$CACHED_BINARY" ]]; then
+if [ -f "$CACHED_BINARY" ]; then
     echo "       Using cached binary"
     cp "$CACHED_BINARY" "$BUILD_DIR/bin/cloud-sql-proxy"
 else
@@ -35,8 +35,10 @@ chmod +x "$BUILD_DIR/bin/cloud-sql-proxy"
 cat >$BUILD_DIR/bin/run-cloud-sql-proxy <<'EOF'
 #!/bin/sh
 echo "-----> Starting cloud sql proxy"
-$BUILD_DIR/bin/cloud-sql-proxy --credentials-file $GOOGLE_APPLICATION_CREDENTIALS --port 5433 $PRIMARY_CLOUD_SQL_INSTANCE $REPLICA_CLOUD_SQL_INSTANCE
+./bin/cloud-sql-proxy --credentials-file $GOOGLE_APPLICATION_CREDENTIALS --port 5433 $PRIMARY_CLOUD_SQL_INSTANCE $REPLICA_CLOUD_SQL_INSTANCE
 EOF
+
+chmod +x $BUILD_DIR/bin/run-cloud-sql-proxy
 
 echo "       Cloud SQL Proxy installed to bin/run-cloud-sql-proxy"
 
