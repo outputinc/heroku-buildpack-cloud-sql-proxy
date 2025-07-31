@@ -32,10 +32,10 @@ fi
 # Make it executable
 chmod +x "$BUILD_DIR/bin/cloud-sql-proxy"
 
-cat >$BUILD_DIR/bin/run_cloud_sql_proxy <<'EOF'
+cat >$BUILD_DIR/bin/run-cloud-sql-proxy <<'EOF'
 #!/bin/sh
 echo "-----> Starting cloud sql proxy"
-$BUILD_DIR/bin/cloud_sql_proxy --credentials-file $GOOGLE_APPLICATION_CREDENTIALS --port 5433 $PRIMARY_CLOUD_SQL_INSTANCE $REPLICA_CLOUD_SQL_INSTANCE
+$BUILD_DIR/bin/cloud-sql-proxy --credentials-file $GOOGLE_APPLICATION_CREDENTIALS --port 5433 $PRIMARY_CLOUD_SQL_INSTANCE $REPLICA_CLOUD_SQL_INSTANCE
 EOF
 
 echo "       Cloud SQL Proxy installed to bin/run-cloud-sql-proxy"
