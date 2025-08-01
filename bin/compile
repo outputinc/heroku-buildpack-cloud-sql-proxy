@@ -35,7 +35,7 @@ chmod +x "$BUILD_DIR/bin/cloud-sql-proxy"
 cat >$BUILD_DIR/bin/run-cloud-sql-proxy <<'EOF'
 #!/bin/sh
 echo "-----> Starting cloud sql proxy"
-exec ./bin/cloud-sql-proxy --credentials-file $GOOGLE_APPLICATION_CREDENTIALS --port 5433 $PRIMARY_CLOUD_SQL_INSTANCE $REPLICA_CLOUD_SQL_INSTANCE &
+exec /app/bin/cloud-sql-proxy --credentials-file $GOOGLE_APPLICATION_CREDENTIALS --port 5433 $PRIMARY_CLOUD_SQL_INSTANCE $REPLICA_CLOUD_SQL_INSTANCE &
 EOF
 
 chmod +x $BUILD_DIR/bin/run-cloud-sql-proxy
